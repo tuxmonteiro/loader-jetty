@@ -1,7 +1,8 @@
 org.mortbay.jetty.load.collector
 org.mortbay.jetty.load.generator
-org.mortbay.jetty.load.generator.latency
-org.mortbay.jetty.load.generator.profile
-org.mortbay.jetty.load.generator.report
-org.mortbay.jetty.load.generator.responsetime
+org.mortbay.jetty.load.generator.listeners
+org.mortbay.jetty.load.generator.listeners.latency
+org.mortbay.jetty.load.generator.listeners.report
+org.mortbay.jetty.load.generator.listeners.responsetime
 org.mortbay.jetty.load.generator.starter
+org.mortbay.jetty.load.generator.util
