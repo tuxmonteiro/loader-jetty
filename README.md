@@ -4,7 +4,7 @@ LoadGenerator will generate some load on an http server using the Jetty HttpClie
 
 You can generate load for both HTTP/1.1 and HTTP/2
 
-More documentation https://jetty-project.github.io/jetty-load-generator/
+More documentation https://jetty-project.github.io/loader-jetty/
 
 Snapshots available here: http://oss.sonatype.org/content/repositories/jetty-snapshots
 
@@ -119,7 +119,7 @@ The responseTime is the time taken just before 1. and 9. (time to get the last b
 ### Using uber jar
 
 ```
-java -jar jetty-load-generator-starter-1.0.0-SNAPSHOT-uber.jar -h localhost -p 8080 -pgp ./simple_profile.groovy -t http -rt 10 -rtu s -tr 40 -u 100
+java -jar loader-jetty-starter-1.0.0-SNAPSHOT-uber.jar -h localhost -p 8080 -pgp ./simple_profile.groovy -t http -rt 10 -rtu s -tr 40 -u 100
 ```
 See --help for usage
 

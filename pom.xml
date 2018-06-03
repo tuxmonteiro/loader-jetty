@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.mortbay.jetty.loadgenerator</groupId>
-  <artifactId>jetty-load-generator</artifactId>
+  <groupId>com.globo.grou.groot</groupId>
+  <artifactId>loader-jetty</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Jetty :: Load Generator</name>
-  <url>https://github.com/jetty-project/jetty-load-generator</url>
+  <url>https://github.com/jetty-project/loader-jetty</url>
   <description>
     The Jetty HTTP and HTTP/2 Load Generator
   </description>
@@ -29,9 +29,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:https://github.com/jetty-project/jetty-load-generator.git</connection>
-    <developerConnection>scm:git:git@github.com:jetty-project/jetty-load-generator.git</developerConnection>
-    <url>https://github.com/jetty-project/jetty-load-generator</url>
+    <connection>scm:git:https://github.com/jetty-project/loader-jetty.git</connection>
+    <developerConnection>scm:git:git@github.com:jetty-project/loader-jetty.git</developerConnection>
+    <url>https://github.com/jetty-project/loader-jetty</url>
   </scm>
 
   <distributionManagement>
@@ -48,11 +48,11 @@
   </distributionManagement>
 
   <modules>
-    <module>jetty-load-generator-client</module>
-    <module>jetty-load-generator-collector</module>
-    <module>jetty-load-generator-listeners</module>
-    <module>jetty-load-generator-store</module>
-    <module>jetty-load-generator-starter</module>
+    <module>loader-jetty-client</module>
+    <module>loader-jetty-collector</module>
+    <module>loader-jetty-listeners</module>
+    <module>loader-jetty-store</module>
+    <module>loader-jetty-starter</module>
   </modules>
 
   <dependencyManagement>
@@ -245,7 +245,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.20.1</version>
+          <version>2.21.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
