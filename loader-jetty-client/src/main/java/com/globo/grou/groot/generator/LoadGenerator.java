@@ -341,6 +341,13 @@ public class LoadGenerator extends ContainerLifeCycle {
                 .forEach(l -> l.onResourceNode(info));
     }
 
+    private void fireOnContent(int remaining) {
+        config.getResourceListeners().stream()
+                .filter(l -> l instanceof Resource.OnContentListener)
+                .map(l -> (Resource.OnContentListener)l)
+                .forEach(l -> l.onContent(remaining));
+    }
+
     private void fireResourceTreeEvent(Resource.Info info) {
         config.getResourceListeners().stream()
                 .filter(l -> l instanceof Resource.TreeListener)
@@ -461,7 +468,11 @@ public class LoadGenerator extends ContainerLifeCycle {
             @Override
             public void onContent(Response response, ByteBuffer buffer) {
                 // Record content length.
-                info.addContent(buffer.remaining());
+                int remaining = buffer.remaining();
+                info.addContent(remaining);
+                if (!warmup) {
+                    fireOnContent(remaining);
+                }
             }
 
             @Override

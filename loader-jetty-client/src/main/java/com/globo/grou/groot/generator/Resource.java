@@ -325,7 +325,7 @@ public class Resource {
      * <p>Node events are emitted for non-warmup resource requests that completed successfully.</p>
      */
     public interface NodeListener extends Listener {
-        public void onResourceNode(Info info);
+        void onResourceNode(Info info);
     }
 
     /**
@@ -333,6 +333,10 @@ public class Resource {
      * <p>Tree node events are emitted for the non-warmup root resource.</p>
      */
     public interface TreeListener extends Listener {
-        public void onResourceTree(Info info);
+        void onResourceTree(Info info);
+    }
+
+    public interface OnContentListener extends Listener {
+        void onContent(int remaining);
     }
 }
