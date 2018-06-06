@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.http.HttpMethod;
+import org.eclipse.jetty.http.HttpVersion;
 
 /**
  * <p>A resource node to be fetched by the load generator.</p>
@@ -224,6 +225,7 @@ public class Resource {
         private long contentLength;
         private boolean pushed;
         private int status;
+        private HttpVersion version;
 
         private Info(Resource resource) {
             this.resource = resource;
@@ -314,6 +316,18 @@ public class Resource {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+
+        /**
+         * @return the response version
+         */
+        public HttpVersion getVersion() {
+            return version;
+        }
+
+        public Info setVersion(HttpVersion version) {
+            this.version = version;
+            return this;
         }
     }
 

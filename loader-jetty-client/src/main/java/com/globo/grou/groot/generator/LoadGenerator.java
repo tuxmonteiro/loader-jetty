@@ -36,7 +36,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpRequest;
@@ -463,6 +462,7 @@ public class LoadGenerator extends ContainerLifeCycle {
             public void onBegin(Response response) {
                 // Record time to first byte.
                 info.setLatencyTime(System.nanoTime());
+                info.setVersion(response.getVersion());
             }
 
             @Override
