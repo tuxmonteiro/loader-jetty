@@ -267,7 +267,7 @@ public class LoadGenerator extends ContainerLifeCycle {
 
     protected Request newRequest(HttpClient client, Config config, final Resource resource) {
         HttpFields requestHeaders = resource.getRequestHeaders();
-        String contentType = requestHeaders.get("content-type");
+        String contentType = requestHeaders.get(HttpHeader.CONTENT_TYPE.asString());
 
         String method = resource.getMethod();
         Request request = client.newRequest(config.getHost(), config.getPort())
@@ -283,6 +283,8 @@ public class LoadGenerator extends ContainerLifeCycle {
         if (resource.hasBody()) {
             if (contentType == null || contentType.isEmpty()) {
                 contentType = "application/octet-stream";
+            } else {
+                requestHeaders.remove(HttpHeader.CONTENT_TYPE.asString());
             }
             final ContentProvider contentProvider = new BytesContentProvider(contentType, resource.content());
             request.content(contentProvider, contentType);
