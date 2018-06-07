@@ -42,8 +42,9 @@ public class Resource {
     private final HttpFields requestHeaders = new HttpFields();
     private String method = HttpMethod.GET.asString();
     private String path = "/";
-    private int requestLength;
-    private int responseLength;
+    private int requestLength = 0;
+    private int responseLength = 0;
+    private byte[] content = new byte[0];
 
     public Resource() {
         this((String)null);
@@ -146,6 +147,19 @@ public class Resource {
 
     public int getResponseLength() {
         return responseLength;
+    }
+
+    public byte[] content() {
+        return this.content;
+    }
+
+    public Resource setContent(byte[] content) {
+        this.content = content;
+        return this;
+    }
+
+    public boolean hasBody() {
+        return content.length > 0;
     }
 
     /**

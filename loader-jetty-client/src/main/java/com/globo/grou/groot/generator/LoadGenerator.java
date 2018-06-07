@@ -16,33 +16,15 @@
 
 package com.globo.grou.groot.generator;
 
-import java.net.URI;
-import java.nio.ByteBuffer;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EventListener;
-import java.util.List;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpRequest;
+import org.eclipse.jetty.client.api.ContentProvider;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.api.Response;
 import org.eclipse.jetty.client.api.Result;
 import org.eclipse.jetty.client.util.BytesContentProvider;
+import org.eclipse.jetty.http.HttpFields;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.CountingCallback;
 import org.eclipse.jetty.util.SocketAddressResolver;
@@ -54,6 +36,13 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.Scheduler;
+
+import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @ManagedObject("LoadGenerator")
 public class LoadGenerator extends ContainerLifeCycle {
@@ -276,17 +265,33 @@ public class LoadGenerator extends ContainerLifeCycle {
         }
     }
 
-    protected Request newRequest(HttpClient client, Config config, Resource resource) {
+    protected Request newRequest(HttpClient client, Config config, final Resource resource) {
+        HttpFields requestHeaders = resource.getRequestHeaders();
+        String contentType = requestHeaders.get("content-type");
+
+        String method = resource.getMethod();
         Request request = client.newRequest(config.getHost(), config.getPort())
                 .scheme(config.getScheme())
-                .method(resource.getMethod())
+                .method(method)
                 .path(resource.getPath());
-        request.getHeaders().addAll(resource.getRequestHeaders());
-        request.header(Resource.RESPONSE_LENGTH, Integer.toString(resource.getResponseLength()));
-        int requestLength = resource.getRequestLength();
-        if (requestLength > 0) {
-            request.content(new BytesContentProvider(new byte[requestLength]));
+        request.getHeaders().addAll(requestHeaders);
+
+        if (resource.getResponseLength() > 0) {
+            request.header(Resource.RESPONSE_LENGTH, Integer.toString(resource.getResponseLength()));
         }
+
+        if (resource.hasBody()) {
+            if (contentType == null || contentType.isEmpty()) {
+                contentType = "application/octet-stream";
+            }
+            final ContentProvider contentProvider = new BytesContentProvider(contentType, resource.content());
+            request.content(contentProvider, contentType);
+            long requestLength = contentProvider.getLength();
+            if (requestLength > 0) {
+                request.header(HttpHeader.CONTENT_LENGTH.asString(), String.valueOf(requestLength));
+            }
+        }
+
         return request;
     }
 
